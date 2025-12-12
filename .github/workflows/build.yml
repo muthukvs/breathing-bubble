@@ -26,6 +26,13 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
       
+      - name: Generate platform files (if missing)
+        run: |
+          if [ ! -d "android/app" ]; then
+            echo "Generating Android platform files..."
+            flutter create --platforms=android .
+          fi
+      
       - name: Build APK
         run: flutter build apk --release
       
