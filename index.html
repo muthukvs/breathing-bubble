@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Breathing Bubble</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #1e293b 0%, #020617 100%);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      overflow: hidden;
+    }
+    
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+    }
+    
+    .bubble {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #60a5fa, #3b82f6);
+      box-shadow: 0 20px 60px rgba(59, 130, 246, 0.5), inset -2px -2px 5px rgba(0, 0, 0, 0.2);
+      animation: breathe 8s ease-in-out infinite;
+      cursor: pointer;
+      transition: box-shadow 0.1s ease;
+    }
+    
+    .bubble:hover {
+      box-shadow: 0 30px 80px rgba(59, 130, 246, 0.7), inset -2px -2px 5px rgba(0, 0, 0, 0.2);
+    }
+    
+    @keyframes breathe {
+      0% {
+        transform: scale(0.8);
+        opacity: 0.7;
+      }
+      50% {
+        transform: scale(1.2);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(0.8);
+        opacity: 0.7;
+      }
+    }
+    
+    .text-container {
+      text-align: center;
+      color: #e5e7eb;
+    }
+    
+    .text-container h1 {
+      font-size: 2.5rem;
+      margin-bottom: 12px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+    
+    .text-container p {
+      font-size: 1.1rem;
+      opacity: 0.8;
+      font-weight: 400;
+    }
+    
+    .status {
+      position: absolute;
+      top: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #94a3b8;
+      font-size: 0.95rem;
+      opacity: 0.7;
+      transition: all 0.3s ease;
+    }
+    
+    .status.inhale {
+      color: #60a5fa;
+      opacity: 1;
+      font-weight: 500;
+    }
+    
+    .status.exhale {
+      color: #818cf8;
+      opacity: 1;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="status" id="status"></div>
+  <div class="container">
+    <div class="bubble" id="bubble"></div>
+    <div class="text-container">
+      <h1>Breathing Bubble</h1>
+      <p>Open and breathe</p>
+    </div>
+  </div>
+  
+  <script>
+    const CYCLE_DURATION = 8000; // 8 seconds total (4s inhale + 4s exhale)
+    const INHALE_DURATION = 4000; // 4 seconds
+    const EXHALE_DURATION = 4000; // 4 seconds
+    
+    const status = document.getElementById('status');
+    
+    function updateStatus() {
+      const now = Date.now();
+      const elapsed = now % CYCLE_DURATION;
+      
+      if (elapsed < INHALE_DURATION) {
+        status.textContent = 'Inhale';
+        status.className = 'status inhale';
+      } else {
+        status.textContent = 'Exhale';
+        status.className = 'status exhale';
+      }
+    }
+    
+    // Update status every 100ms
+    setInterval(updateStatus, 100);
+    updateStatus();
+    
+    // Start the breathing animation immediately
+    const bubble = document.getElementById('bubble');
+    const startTime = Date.now();
+    
+    // Ensure smooth continuous animation
+    bubble.style.animation = `breathe ${CYCLE_DURATION / 1000}s ease-in-out infinite`;
+  </script>
+</body>
+</html>
